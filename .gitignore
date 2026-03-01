@@ -1,0 +1,7 @@
+# Byte-compiled / optimized / C extensions
+__pycache__/
+*.py[cod]
+
+# SQLite debug / test databases
+debug.db
+test_*.db

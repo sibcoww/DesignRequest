@@ -136,7 +136,7 @@ class DesignRequestApp:
         ttk.Label(parent, text="Описание").pack(anchor=tk.W, padx=10, pady=(10, 0))
         self.description_var = tk.StringVar()
         description_frame = ttk.Frame(parent)
-        description_frame.pack(fill=tk.BOTH, padx=10, pady=(0, 10), expand=False)
+        description_frame.pack(fill=tk.BOTH, padx=10, pady=(0, 5), expand=False)
         
         # Use scrolled text for better description handling
         self.description_text = scrolledtext.ScrolledText(
@@ -146,6 +146,28 @@ class DesignRequestApp:
             wrap=tk.WORD
         )
         self.description_text.pack(fill=tk.BOTH, expand=True)
+
+        # Action buttons row directly below the description for easy access
+        form_action_frame = ttk.Frame(parent)
+        form_action_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
+
+        ttk.Button(
+            form_action_frame,
+            text="Добавить заявку",
+            command=self.add_request
+        ).pack(side=tk.LEFT, padx=(0, 5))
+
+        ttk.Button(
+            form_action_frame,
+            text="Обновить заявку",
+            command=self.update_request
+        ).pack(side=tk.LEFT, padx=(0, 5))
+
+        ttk.Button(
+            form_action_frame,
+            text="Очистить поля",
+            command=self.clear_fields
+        ).pack(side=tk.LEFT, padx=(0, 5))
 
     def setup_search_frame(self, parent: ttk.Frame) -> None:
         """
@@ -171,11 +193,11 @@ class DesignRequestApp:
 
         # Filter by status
         ttk.Label(search_frame, text="Фильтр по статусу:").pack(side=tk.LEFT, padx=(0, 5))
-        self.filter_var = tk.StringVar(value="All")
+        self.filter_var = tk.StringVar(value="Все")
         filter_combo = ttk.Combobox(
             search_frame, 
             textvariable=self.filter_var, 
-            values=["All"] + self.STATUS_OPTIONS, 
+            values=["Все"] + self.STATUS_OPTIONS, 
             width=15, 
             state="readonly"
         )
@@ -505,7 +527,7 @@ class DesignRequestApp:
             for item in self.tree.get_children():
                 self.tree.delete(item)
 
-            if selected_status == "All":
+            if selected_status == "Все":
                 requests = self.db.get_all_requests()
             else:
                 requests = self.db.filter_by_status(selected_status)
@@ -545,7 +567,7 @@ class DesignRequestApp:
         self.client_name_var.set("")
         self.contact_info_var.set("")
         self.project_type_var.set("")
-        self.status_var.set("New")
+        self.status_var.set("Новая")
         self.deadline_var.set("")
         self.description_text.delete(1.0, tk.END)
         self.search_var.set("")

@@ -75,9 +75,45 @@ class DesignRequestApp:
             parent (ttk.Frame): Parent frame.
         """
         input_frame = ttk.LabelFrame(parent, text="Детали заявки", padding="10")
-        input_frame.pack(fill=tk.BOTH, padx=(0, 10), pady=(0, 10))
+        input_frame.pack(fill=tk.X, padx=(0, 10), pady=(0, 10))
 
-        # Create two columns for better layout
+        # Action buttons — packed BOTTOM first so they anchor to the bottom of the frame
+        action_row = ttk.Frame(input_frame)
+        action_row.pack(side=tk.BOTTOM, fill=tk.X, pady=(8, 0))
+
+        ttk.Button(
+            action_row,
+            text="Добавить заявку",
+            command=self.add_request
+        ).pack(side=tk.LEFT, padx=(0, 5))
+
+        ttk.Button(
+            action_row,
+            text="Обновить заявку",
+            command=self.update_request
+        ).pack(side=tk.LEFT, padx=(0, 5))
+
+        ttk.Button(
+            action_row,
+            text="Очистить поля",
+            command=self.clear_fields
+        ).pack(side=tk.LEFT, padx=(0, 5))
+
+        # Description — packed BOTTOM before the two columns so it sits above the buttons
+        desc_row = ttk.Frame(input_frame)
+        desc_row.pack(side=tk.BOTTOM, fill=tk.X, pady=(5, 0))
+
+        ttk.Label(desc_row, text="Описание").pack(anchor=tk.W)
+        self.description_var = tk.StringVar()
+        self.description_text = scrolledtext.ScrolledText(
+            desc_row,
+            height=3,
+            width=100,
+            wrap=tk.WORD
+        )
+        self.description_text.pack(fill=tk.X)
+
+        # Two columns for short fields — packed LEFT, filling the remaining top area
         left_column = ttk.Frame(input_frame)
         left_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
 
@@ -132,21 +168,6 @@ class DesignRequestApp:
             anchor=tk.W, pady=(0, 10), fill=tk.X
         )
 
-        # Description
-        ttk.Label(parent, text="Описание").pack(anchor=tk.W, padx=10, pady=(10, 0))
-        self.description_var = tk.StringVar()
-        description_frame = ttk.Frame(parent)
-        description_frame.pack(fill=tk.BOTH, padx=10, pady=(0, 10), expand=False)
-        
-        # Use scrolled text for better description handling
-        self.description_text = scrolledtext.ScrolledText(
-            description_frame,
-            height=3,
-            width=100,
-            wrap=tk.WORD
-        )
-        self.description_text.pack(fill=tk.BOTH, expand=True)
-
     def setup_search_frame(self, parent: ttk.Frame) -> None:
         """
         Setup search and filter frame.
@@ -171,11 +192,11 @@ class DesignRequestApp:
 
         # Filter by status
         ttk.Label(search_frame, text="Фильтр по статусу:").pack(side=tk.LEFT, padx=(0, 5))
-        self.filter_var = tk.StringVar(value="All")
+        self.filter_var = tk.StringVar(value="Все")
         filter_combo = ttk.Combobox(
             search_frame, 
             textvariable=self.filter_var, 
-            values=["All"] + self.STATUS_OPTIONS, 
+            values=["Все"] + self.STATUS_OPTIONS, 
             width=15, 
             state="readonly"
         )
@@ -505,7 +526,7 @@ class DesignRequestApp:
             for item in self.tree.get_children():
                 self.tree.delete(item)
 
-            if selected_status == "All":
+            if selected_status == "Все":
                 requests = self.db.get_all_requests()
             else:
                 requests = self.db.filter_by_status(selected_status)
@@ -545,7 +566,7 @@ class DesignRequestApp:
         self.client_name_var.set("")
         self.contact_info_var.set("")
         self.project_type_var.set("")
-        self.status_var.set("New")
+        self.status_var.set("Новая")
         self.deadline_var.set("")
         self.description_text.delete(1.0, tk.END)
         self.search_var.set("")

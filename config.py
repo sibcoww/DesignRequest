@@ -8,7 +8,7 @@ DATABASE_FILE = "design_requests.db"
 DATABASE_TIMEOUT = 30  # seconds
 
 # GUI Configuration
-WINDOW_TITLE = "DesignRequest - Project Request Management System"
+WINDOW_TITLE = "DesignRequest - Система управления заявками на дизайн"
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 700
 WINDOW_MIN_WIDTH = 1000

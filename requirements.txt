@@ -1,0 +1,18 @@
+# DesignRequest Application Requirements
+
+# Python standard libraries used:
+# - tkinter (GUI framework) - usually included with Python
+# - sqlite3 (Database) - included with Python
+# - datetime (Date/time handling) - included with Python
+# - typing (Type hints) - included with Python
+
+# Note: This application uses only Python standard library.
+# No external dependencies are required.
+# 
+# Minimum Python version: 3.7
+# Recommended Python version: 3.8+
+#
+# If you need to install tkinter on Linux:
+# Ubuntu/Debian: sudo apt-get install python3-tk
+# Fedora: sudo dnf install python3-tkinter
+# Arch Linux: sudo pacman -S tk
